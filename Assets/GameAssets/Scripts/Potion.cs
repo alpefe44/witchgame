@@ -8,6 +8,7 @@ public class Potion : MonoBehaviour
     private bool isTake;
     private Rigidbody2D _rb;
     [SerializeField] private SpriteRenderer image;
+    private PotionCraft potionCraft;
 
 
     private void Awake()
@@ -44,6 +45,7 @@ public class Potion : MonoBehaviour
                 Vector2 direction = _characterPosition.GetHandLocation().transform.right;
                 direction = new Vector2(direction.x, direction.y).normalized;
                 _rb.AddForce(direction * 5f, ForceMode2D.Impulse);
+                potionCraft?.DecreaseSpawnCount();
 
             }
 
@@ -79,5 +81,10 @@ public class Potion : MonoBehaviour
         image.sprite = data.sprite;
     }
     public bool IsTaken => isTake;
+
+    public void SetPotionCraft(PotionCraft pc)
+    {
+        potionCraft = pc;
+    }
 
 }
