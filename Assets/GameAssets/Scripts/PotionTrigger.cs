@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PotionTrigger : MonoBehaviour
@@ -7,12 +8,15 @@ public class PotionTrigger : MonoBehaviour
 
     public Potion CurrentPotion => _currentPotion;
 
+    private List<Potion> potions = new List<Potion>();
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<Potion>(out var potion) && _currentPotion == null)
         {
             isPlayerInRange = true;
             _currentPotion = potion;
+            potions.Add(_currentPotion);
         }
     }
 
@@ -31,5 +35,29 @@ public class PotionTrigger : MonoBehaviour
     }
 
     public bool IsRange => isPlayerInRange;
+
+    public Potion ClosestPotion()
+    {
+
+        if (potions == null || potions.Count == 0)
+            return null;
+
+        Potion closestPotion = potions[0];
+        float closestDistance = Vector2.Distance(transform.position, closestPotion.transform.position);
+
+        foreach (var potion in potions)
+        {
+            float distance = Vector2.Distance(transform.position, potion.transform.position);
+            if (distance < closestDistance)
+            {
+                closestPotion = potion;
+                closestDistance = distance;
+            }
+        }
+
+        Debug.Log(closestPotion  + "closest potion");
+
+        return closestPotion;
+    }
 
 }

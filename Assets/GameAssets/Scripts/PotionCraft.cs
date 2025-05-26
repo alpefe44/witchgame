@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PotionCraft : MonoBehaviour
@@ -5,12 +6,27 @@ public class PotionCraft : MonoBehaviour
     [SerializeField] private PotionData potionData;
     [SerializeField] private GameObject spawnObject;
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private PotionTrigger potionTrigger;
+    [SerializeField] public PotionTrigger potionTrigger;
+
+    public static List<PotionCraft> AllPotionCrafts = new List<PotionCraft>();
 
     public bool isSpawnable;
 
     public int spawnCount;
 
+    void Awake()
+    {
+        AllPotionCrafts.Add(this);
+        foreach (var item in AllPotionCrafts)
+        {
+            Debug.Log(item.gameObject.name);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        AllPotionCrafts.Remove(this);
+    }
 
     void Update()
     {
@@ -43,7 +59,18 @@ public class PotionCraft : MonoBehaviour
     {
         if (collision.TryGetComponent<CharacterController>(out var player))
         {
-            isSpawnable = true;
+            // Sadece en yakın PotionCraft aktif olacak
+            PotionCraft closest = GetClosestPotionCraft(player.transform.position);
+
+            if (closest == this)
+            {
+                isSpawnable = true;
+                spawnObject = closest.spawnObject;
+            }
+            else
+            {
+                isSpawnable = false;
+            }
         }
     }
 
@@ -59,4 +86,23 @@ public class PotionCraft : MonoBehaviour
     {
         spawnCount = Mathf.Max(0, spawnCount - 1);
     }
+
+    public PotionCraft GetClosestPotionCraft(Vector3 targetPosition)
+    {
+        PotionCraft closest = null;
+        float closestDistance = float.MaxValue;
+
+        foreach (var craft in AllPotionCrafts)
+        {
+            float dist = Vector2.Distance(targetPosition, craft.transform.position);
+            if (dist < closestDistance)
+            {
+                closest = craft;
+                closestDistance = dist;
+            }
+        }
+
+        return closest;
+    }
+
 }

@@ -11,6 +11,7 @@ public class PickUpManager : MonoBehaviour
         {
             if (_potionTrigger.IsRange && !_potionTrigger.CurrentPotion)
             {
+                Debug.Log("ife girdi"); 
                 _potionTrigger.CurrentPotion.TakePotion();
             }
         }
