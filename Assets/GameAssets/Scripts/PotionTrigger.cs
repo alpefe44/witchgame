@@ -10,6 +10,12 @@ public class PotionTrigger : MonoBehaviour
 
     private List<Potion> potions = new List<Potion>();
 
+    void Update()
+    {
+        Debug.Log(_currentPotion + "currentpotion");
+        Debug.Log(isPlayerInRange + "isplayerinrange");
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<Potion>(out var potion) && _currentPotion == null)
@@ -34,30 +40,16 @@ public class PotionTrigger : MonoBehaviour
         _currentPotion = potion;
     }
 
+    public void DestroyCurrenPotion()
+    {
+        if (_currentPotion != null)
+        {
+            Destroy(_currentPotion.gameObject); // 🔥 gameObject'i destroy et
+            _currentPotion = null;
+        }
+    }
+
     public bool IsRange => isPlayerInRange;
 
-    public Potion ClosestPotion()
-    {
-
-        if (potions == null || potions.Count == 0)
-            return null;
-
-        Potion closestPotion = potions[0];
-        float closestDistance = Vector2.Distance(transform.position, closestPotion.transform.position);
-
-        foreach (var potion in potions)
-        {
-            float distance = Vector2.Distance(transform.position, potion.transform.position);
-            if (distance < closestDistance)
-            {
-                closestPotion = potion;
-                closestDistance = distance;
-            }
-        }
-
-        Debug.Log(closestPotion  + "closest potion");
-
-        return closestPotion;
-    }
 
 }

@@ -5,6 +5,19 @@ public class Customer : MonoBehaviour
     public PotionRecipe WantedRecipe { get; private set; }
     public bool IsSatisfied { get; private set; }
 
+    private PotionTrigger potionTrigger;
+
+    void Awake()
+    {
+        potionTrigger = FindObjectOfType<PotionTrigger>();
+    }
+
+    private void Update()
+    {
+        Debug.Log(potionTrigger.CurrentPotion + "customer içindeki potion trigger");
+
+    }
+
     public void SetWantedRecipe(PotionRecipe recipe)
     {
         WantedRecipe = recipe;
@@ -20,12 +33,13 @@ public class Customer : MonoBehaviour
             IsSatisfied = true;
             // Animasyon, skor, para vs.
             Destroy(gameObject);
+            potionTrigger.DestroyCurrenPotion();
         }
         else
         {
             Debug.Log("Yanlış iksir verildi! Müşteri mutsuz.");
             IsSatisfied = false;
-            Destroy(gameObject);
+            potionTrigger.DestroyCurrenPotion();
             // Animasyon vs.
         }
     }

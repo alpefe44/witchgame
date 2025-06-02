@@ -9,7 +9,7 @@ public class PickUpManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (_potionTrigger.IsRange && !_potionTrigger.CurrentPotion)
+            if (_potionTrigger.IsRange && _potionTrigger.CurrentPotion)
             {
                 Debug.Log("ife girdi"); 
                 _potionTrigger.CurrentPotion.TakePotion();

@@ -61,7 +61,7 @@ public class PotionCraft : MonoBehaviour
         {
             // Sadece en yakın PotionCraft aktif olacak
             PotionCraft closest = GetClosestPotionCraft(player.transform.position);
-
+            Debug.Log(closest.gameObject.name + "closest gameobject name");
             if (closest == this)
             {
                 isSpawnable = true;

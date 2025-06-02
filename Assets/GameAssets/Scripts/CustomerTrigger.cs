@@ -15,6 +15,7 @@ public class CustomerTrigger : MonoBehaviour
                 {
                     CustomerManager.CurrentCustomer.ReceivePotion(potion.GetPotionData());
                     CustomerManager.CurrentCustomer = null;
+                    CustomerManager.Instance.CustomerLeft();
                 }
             }
         }
